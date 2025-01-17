@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -64,10 +63,6 @@ dependencies {
 
     implementation ("org.apache.poi:poi:5.2.3")
     implementation ("org.apache.poi:poi-ooxml:5.2.3")
-    implementation ("com.google.android.gms:play-services-auth:20.1.0")
-    implementation ("com.google.api-client:google-api-client:2.1.0")
-    implementation ("com.google.apis:google-api-services-sheets:v4-rev305-1.25.0")
-    implementation ("com.google.http-client:google-http-client-gson:1.42.3")
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.13.0")
     implementation ("androidx.appcompat:appcompat:1.3.1")
     implementation ("androidx.constraintlayout:constraintlayout:2.0.4")

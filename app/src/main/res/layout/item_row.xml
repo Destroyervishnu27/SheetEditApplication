@@ -1,0 +1,41 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rowLayout"
+    android:orientation="horizontal">
+
+    <!-- Example for 3 columns. Repeat EditText as needed for more columns -->
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/cell_background"
+        android:gravity="center"
+        android:padding="8dp"
+        android:hint="Cell 1"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/cell_background"
+        android:gravity="center"
+        android:padding="8dp"
+        android:hint="Cell 2"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/cell_background"
+        android:gravity="center"
+        android:padding="8dp"
+        android:hint="Cell 3"
+        android:textSize="14sp" />
+</LinearLayout>

@@ -1,0 +1,13 @@
+<EditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/editTextCell"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cell_background"
+    android:gravity="center"
+    android:padding="8dp"
+    android:textSize="14sp"
+    android:hint="Value"
+    android:singleLine="true"
+    android:imeOptions="actionNext"
+    android:layout_margin="1dp" />
