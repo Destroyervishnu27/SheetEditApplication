@@ -21,7 +21,8 @@ import java.util.List;
 
 public class OpenSheetActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    private RecyclerView verticalRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,34 +30,22 @@ public class OpenSheetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_open_sheet);
 
 
-        recyclerView = findViewById(R.id.recyclerView);
+        verticalRecyclerView = findViewById(R.id.verticalRecyclerView);
 
         // Load Excel data
-        int rawFileId = R.raw.one; // Replace with your actual file ID
+        int rawFileId = R.raw.one; // Replace with your raw file ID
         List<List<String>> excelData = ExcelReader.readExcelFile(this, rawFileId);
 
         if (excelData.isEmpty()) {
-            return; // Handle empty data case
+            return;
         }
 
-        setupRecyclerView(excelData);
+        setupTable(excelData);
     }
 
-    private void setupRecyclerView(List<List<String>> data) {
-        // Flatten 2D list into a 1D list
-        List<String> tableData = new ArrayList<>();
-        int columnCount = 0;
-
-        for (List<String> row : data) {
-            columnCount = Math.max(columnCount, row.size());
-            tableData.addAll(row);
-        }
-
-        // Setup RecyclerView with GridLayoutManager
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, columnCount);
-        recyclerView.setLayoutManager(gridLayoutManager);
-
-        TableAdapter adapter = new TableAdapter(this, tableData, columnCount);
-        recyclerView.setAdapter(adapter);
+    private void setupTable(List<List<String>> data) {
+        TableAdapter tableAdapter = new TableAdapter(this, data);
+        verticalRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        verticalRecyclerView.setAdapter(tableAdapter);
     }
 }

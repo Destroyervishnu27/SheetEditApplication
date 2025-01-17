@@ -1,47 +1,38 @@
 package com.example.sheeteditapplication;
-
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> {
     private final Context context;
-    private final List<String> tableData;
-    private final int columnCount;
+    private final List<List<String>> tableData;
 
-    public TableAdapter(Context context, List<String> tableData, int columnCount) {
+    public TableAdapter(Context context, List<List<String>> tableData) {
         this.context = context;
         this.tableData = tableData;
-        this.columnCount = columnCount;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.cell_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.row_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String cellValue = tableData.get(position);
+        List<String> rowData = tableData.get(position);
+        RowAdapter rowAdapter = new RowAdapter(context, rowData);
 
-        // Highlight headers
-        if (position < columnCount) {
-            holder.editText.setBackgroundColor(Color.LTGRAY);
-            holder.editText.setTextColor(Color.BLACK);
-            holder.editText.setEnabled(false); // Header cells are not editable
-        }
-
-        holder.editText.setText(cellValue);
+        holder.horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        holder.horizontalRecyclerView.setAdapter(rowAdapter);
     }
 
     @Override
@@ -50,11 +41,11 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        EditText editText;
+        RecyclerView horizontalRecyclerView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            editText = itemView.findViewById(R.id.editTextCell);
+            horizontalRecyclerView = itemView.findViewById(R.id.horizontalRecyclerView);
         }
     }
 }
