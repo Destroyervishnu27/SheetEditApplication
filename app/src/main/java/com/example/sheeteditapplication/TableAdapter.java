@@ -1,6 +1,7 @@
 package com.example.sheeteditapplication;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,15 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String cellValue = tableData.get(position);
-        holder.editTextCell.setText(cellValue);
+
+        // Highlight headers
+        if (position < columnCount) {
+            holder.editText.setBackgroundColor(Color.LTGRAY);
+            holder.editText.setTextColor(Color.BLACK);
+            holder.editText.setEnabled(false); // Header cells are not editable
+        }
+
+        holder.editText.setText(cellValue);
     }
 
     @Override
@@ -41,12 +50,11 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        EditText editTextCell;
+        EditText editText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            editTextCell = itemView.findViewById(R.id.editTextCell);
+            editText = itemView.findViewById(R.id.editTextCell);
         }
     }
 }
-

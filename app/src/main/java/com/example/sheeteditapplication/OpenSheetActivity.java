@@ -21,7 +21,7 @@ import java.util.List;
 
 public class OpenSheetActivity extends AppCompatActivity {
 
-    private TableLayout tableLayout;
+    private RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,53 +29,34 @@ public class OpenSheetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_open_sheet);
 
 
-        tableLayout = findViewById(R.id.tableLayout);
+        recyclerView = findViewById(R.id.recyclerView);
 
         // Load Excel data
-        int rawFileId = R.raw.one; // Replace with your actual file
+        int rawFileId = R.raw.one; // Replace with your actual file ID
         List<List<String>> excelData = ExcelReader.readExcelFile(this, rawFileId);
 
         if (excelData.isEmpty()) {
-            return;
+            return; // Handle empty data case
         }
 
-        createTable(excelData);
+        setupRecyclerView(excelData);
     }
 
-    private void createTable(List<List<String>> data) {
-        for (int i = 0; i < data.size(); i++) {
-            TableRow tableRow = new TableRow(this);
-            tableRow.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-            tableRow.setPadding(4, 4, 4, 4);
+    private void setupRecyclerView(List<List<String>> data) {
+        // Flatten 2D list into a 1D list
+        List<String> tableData = new ArrayList<>();
+        int columnCount = 0;
 
-            List<String> rowData = data.get(i);
-            for (int j = 0; j < rowData.size(); j++) {
-                EditText cell = createCell(rowData.get(j), i == 0); // Header or regular cell
-                tableRow.addView(cell);
-            }
-            tableLayout.addView(tableRow);
-        }
-    }
-
-    private EditText createCell(String value, boolean isHeader) {
-        EditText editText = new EditText(this);
-        editText.setText(value);
-        editText.setPadding(8, 8, 8, 8);
-        editText.setGravity(Gravity.CENTER);
-
-        if (isHeader) {
-            editText.setBackgroundColor(Color.LTGRAY);
-            editText.setTextColor(Color.BLACK);
-            editText.setEnabled(false); // Headers are not editable
-        } else {
-            editText.setBackgroundResource(R.drawable.cell_background);
+        for (List<String> row : data) {
+            columnCount = Math.max(columnCount, row.size());
+            tableData.addAll(row);
         }
 
-        editText.setLayoutParams(new TableRow.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        return editText;
+        // Setup RecyclerView with GridLayoutManager
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, columnCount);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        TableAdapter adapter = new TableAdapter(this, tableData, columnCount);
+        recyclerView.setAdapter(adapter);
     }
 }
