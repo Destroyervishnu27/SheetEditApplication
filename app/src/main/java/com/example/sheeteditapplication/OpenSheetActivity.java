@@ -1,5 +1,6 @@
 package com.example.sheeteditapplication;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -30,37 +31,51 @@ public class OpenSheetActivity extends AppCompatActivity {
 
         tableLayout = findViewById(R.id.tableLayout);
 
-        // Access the Excel file (update with your raw file ID)
-        int rawFileId = R.raw.one; // Replace 'sample' with your file name
+        // Load Excel data
+        int rawFileId = R.raw.one; // Replace with your actual file
         List<List<String>> excelData = ExcelReader.readExcelFile(this, rawFileId);
 
         if (excelData.isEmpty()) {
-            return; // Handle empty data case
+            return;
         }
 
         createTable(excelData);
     }
 
     private void createTable(List<List<String>> data) {
-        for (List<String> rowData : data) {
+        for (int i = 0; i < data.size(); i++) {
             TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
+            tableRow.setPadding(4, 4, 4, 4);
 
-            for (String cellValue : rowData) {
-                EditText cell = new EditText(this);
-                cell.setText(cellValue);
-                cell.setGravity(Gravity.CENTER);
-                cell.setPadding(8, 8, 8, 8);
-                cell.setBackgroundResource(R.drawable.cell_background);
-                cell.setLayoutParams(new TableRow.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
+            List<String> rowData = data.get(i);
+            for (int j = 0; j < rowData.size(); j++) {
+                EditText cell = createCell(rowData.get(j), i == 0); // Header or regular cell
                 tableRow.addView(cell);
             }
-
             tableLayout.addView(tableRow);
         }
+    }
+
+    private EditText createCell(String value, boolean isHeader) {
+        EditText editText = new EditText(this);
+        editText.setText(value);
+        editText.setPadding(8, 8, 8, 8);
+        editText.setGravity(Gravity.CENTER);
+
+        if (isHeader) {
+            editText.setBackgroundColor(Color.LTGRAY);
+            editText.setTextColor(Color.BLACK);
+            editText.setEnabled(false); // Headers are not editable
+        } else {
+            editText.setBackgroundResource(R.drawable.cell_background);
+        }
+
+        editText.setLayoutParams(new TableRow.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        return editText;
     }
 }
